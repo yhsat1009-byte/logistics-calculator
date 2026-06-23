@@ -333,12 +333,14 @@ function calc() {
 
   // Price ratio
   const ratioDiv = document.getElementById('priceRatio');
-  if (price > 0) {
-    const ratio = (bestTotal / price * 100).toFixed(1);
-    ratioDiv.style.display = 'block';
-    ratioDiv.innerHTML = `运费占比售价 <b>${ratio}%</b>（售价 ¥${price}）`;
-  } else {
-    ratioDiv.style.display = 'none';
+  if (ratioDiv) {
+    if (price > 0) {
+      const ratio = (bestTotal / price * 100).toFixed(1);
+      ratioDiv.style.display = 'block';
+      ratioDiv.innerHTML = `运费占比售价 <b>${ratio}%</b>（售价 ¥${price}）`;
+    } else {
+      ratioDiv.style.display = 'none';
+    }
   }
 
   // Comparison table
@@ -370,8 +372,15 @@ function calc() {
   document.getElementById('notesContent').innerHTML = cfg.notes.map(n => `• ${n}`).join('<br>');
 }
 
-// Init
-calc();
+// Init - wrapped in try-catch and DOM ready
+function safeCalc() {
+  try { calc(); } catch(e) { console.error('Calc error:', e); }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', safeCalc);
+} else {
+  safeCalc();
+}
 </script>
 
 </body>
