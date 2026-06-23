@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>物流成本计算器 | 英美双线 | 100-500g</title>
+<title>物流成本计算器 | 英美双线</title>
 <style>
 :root{--bg:#F0F6FA;--card:#FFF;--dark:#0F2B46;--pri:#065A82;--acc:#E8913A;--ac2:#0EA5A0;--grn:#0D9488;--red:#DC2626;--txt:#1E293B;--mut:#64748B;--bdr:#CBD5E1;--r:12px;--sh:0 2px 8px rgba(0,0,0,.06)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -16,7 +16,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 .card-tt{font-size:14px;font-weight:700;color:var(--pri);margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .card-tt .ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px}
 
-/* tabs */
 .tabs{display:flex;gap:0;margin-bottom:12px;background:var(--bg);border-radius:8px;padding:3px}
 .tab{flex:1;text-align:center;padding:8px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s;color:var(--mut);border:none;background:none}
 .tab.active{background:var(--card);color:var(--pri);box-shadow:var(--sh)}
@@ -25,65 +24,71 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Micr
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:520px){.grid2{grid-template-columns:1fr}}
-.fg{display:flex;flex-direction:column;gap:3px}
-.fg label{font-size:11px;font-weight:600;color:var(--mut)}
-.fg input,.fg select{padding:9px 10px;border:1.5px solid var(--bdr);border-radius:7px;font-size:13px;background:#fff;transition:.2s}
+.fg{display:flex;flex-direction:column;gap:3px;position:relative}
+.fg label{font-size:12px;font-weight:600;color:var(--txt)}
+.fg input,.fg select{padding:10px 12px;border:1.5px solid var(--bdr);border-radius:7px;font-size:14px;background:#fff;transition:.2s}
 .fg input:focus,.fg select:focus{outline:none;border-color:var(--acc)}
-.fg .hint{font-size:9px;color:var(--mut)}
+.fg .hint{font-size:10px;color:var(--mut);min-height:14px}
+.fg .help{display:inline-block;width:15px;height:15px;border-radius:50%;background:var(--bdr);color:var(--mut);font-size:10px;text-align:center;line-height:15px;cursor:pointer;margin-left:4px;font-weight:700}
+.fg .help:hover{background:var(--acc);color:#fff}
+.tooltip{display:none;position:absolute;top:100%;left:0;z-index:10;background:var(--dark);color:#fff;font-size:10px;padding:6px 10px;border-radius:6px;width:220px;line-height:1.5;margin-top:4px;pointer-events:none}
+.fg .help:hover+.tooltip,.fg .help:active+.tooltip{display:block}
+
 .check-row{display:flex;align-items:center;gap:6px;font-size:13px;padding:4px 0}
 .check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc)}
+.check-row .chk-help{font-size:10px;color:var(--mut)}
 
-/* results */
 .res-big{text-align:center;padding:8px 0}
-.res-big .lbl{font-size:11px;color:var(--mut);margin-bottom:1px}
-.res-big .num{font-size:40px;font-weight:900;color:var(--acc);line-height:1.1}
+.res-big .lbl{font-size:12px;color:var(--mut);margin-bottom:2px}
+.res-big .num{font-size:42px;font-weight:900;color:var(--acc);line-height:1.1}
 .res-big .sub{font-size:11px;color:var(--mut)}
-.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
 @media(max-width:520px){.breakdown{grid-template-columns:repeat(2,1fr)}}
-.bi{background:var(--bg);border-radius:8px;padding:8px;text-align:center}
-.bi .val{font-size:18px;font-weight:800}
-.bi .lbl{font-size:9px;color:var(--mut)}
+.bi{background:var(--bg);border-radius:8px;padding:10px;text-align:center}
+.bi .val{font-size:20px;font-weight:800}
+.bi .lbl{font-size:10px;color:var(--mut)}
 
 table{width:100%;border-collapse:collapse;font-size:11px}
-th{background:var(--pri);color:#fff;padding:6px 8px;text-align:left;font-weight:600;font-size:10px}
-td{padding:6px 8px;border-bottom:1px solid var(--bdr)}
+th{background:var(--pri);color:#fff;padding:7px 8px;text-align:left;font-weight:600;font-size:10px}
+td{padding:7px 8px;border-bottom:1px solid var(--bdr)}
 tr:nth-child(even) td{background:var(--bg)}
 .best td{background:#ECFDF5!important;font-weight:700}
 .badge{display:inline-block;padding:1px 7px;border-radius:12px;font-size:9px;font-weight:700}
 .badge-best{background:#D1FAE5;color:#065F46}
-.badge-fast{background:#FEF3C7;color:#92400E}
-.badge-eco{background:#DBEAFE;color:#1E40AF}
 
-.note{font-size:10px;color:var(--mut);margin-top:8px;padding:8px;background:var(--bg);border-radius:8px;line-height:1.5}
-.note strong{color:var(--red)}
+.note{font-size:10px;color:var(--mut);margin-top:8px;padding:8px;background:var(--bg);border-radius:8px;line-height:1.6}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--mut)}
+.legend-dot{width:8px;height:8px;border-radius:2px}
 </style>
 </head>
 <body>
 
 <div class="hdr">
   <h1>📦 物流成本计算器</h1>
-  <p>英美双线 | 100-500g 轻小件专用 | 头程+海外仓+尾程一站式计算</p>
+  <p>头程 + 海外仓 + 尾程 · 一站式算清每件物流成本</p>
 </div>
 
 <div class="ctn">
 
-<!-- Country Tabs -->
 <div class="card">
   <div class="tabs">
-    <button class="tab uk active" onclick="switchCountry('UK')">英国线</button>
-    <button class="tab us" onclick="switchCountry('US')">美国线</button>
+    <button class="tab uk active" onclick="switchCountry('UK')">英国线（完整）</button>
+    <button class="tab us" onclick="switchCountry('US')">美国线（仅头程）</button>
   </div>
 
-  <!-- INPUT -->
-  <div class="card-tt"><span class="ico" style="background:#FEF3C7">📐</span>产品参数</div>
+  <div class="card-tt"><span class="ico" style="background:#FEF3C7">📐</span>产品参数 <span style="font-size:10px;font-weight:400;color:var(--mut)">（填好自动计算）</span></div>
   <div class="grid2">
+
     <div class="fg">
-      <label>单件重量 (g)</label>
-      <input type="number" id="weight" value="300" min="50" max="500" step="10" oninput="calc()">
-      <span class="hint">100-500g 范围</span>
+      <label>单件重量（克）<span class="help">?</span><span class="tooltip">一件产品的实际重量。称一下就知道，单位是克（g）。比如一件T恤约200-300g</span></label>
+      <input type="number" id="weight" value="300" min="50" max="5000" step="10" oninput="calc()">
+      <span class="hint">例如：T恤300g、手机壳100g</span>
     </div>
+
     <div class="fg">
-      <label>产品尺寸 长×宽×高 (cm)</label>
+      <label>包装尺寸 长×宽×高（厘米）<span class="help">?</span><span class="tooltip">产品装进快递袋/盒后的外尺寸。物流按"体积重"和"实重"取大值计费。体积重=长×宽×高÷6000。衣服类注意压缩包装</span></label>
       <div style="display:flex;gap:6px">
         <input type="number" id="dimL" value="25" min="1" step="0.5" oninput="calc()" placeholder="长" style="flex:1">
         <input type="number" id="dimW" value="20" min="1" step="0.5" oninput="calc()" placeholder="宽" style="flex:1">
@@ -91,24 +96,48 @@ tr:nth-child(even) td{background:var(--bg)}
       </div>
       <span class="hint" id="volWeightHint"></span>
     </div>
+
     <div class="fg">
-      <label>每箱装几件</label>
+      <label>每箱装几件<span class="help">?</span><span class="tooltip">一个纸箱里塞几件产品。头程有最低计费：空派每箱最低12KG，不满也按12KG收。所以要凑够12KG/箱才不浪费钱</span></label>
       <input type="number" id="perBox" value="40" min="1" step="1" oninput="calc()">
       <span class="hint" id="boxWeightHint"></span>
     </div>
+
     <div class="fg">
-      <label>总发货量 (件)</label>
+      <label>总发货量（件）<span class="help">?</span><span class="tooltip">这批货一共发多少件。头程最低21KG起收，不足21KG也按21KG收费。建议至少凑到21KG</span></label>
       <input type="number" id="totalQty" value="200" min="1" step="1" oninput="calc()">
       <span class="hint" id="totalWeightHint"></span>
     </div>
+
     <div class="fg">
-      <label>产品售价 ¥ (选填)</label>
-      <input type="number" id="price" value="" min="0" step="1" oninput="calc()" placeholder="输入售价看运费占比">
+      <label>产品售价 ¥（选填）<span class="help">?</span><span class="tooltip">填了售价后，会自动算出运费占售价的百分比。比如售价¥100，运费¥30，占比30%——帮你判断利润空间</span></label>
+      <input type="number" id="price" value="" min="0" step="1" oninput="calc()" placeholder="例如：100">
+      <span class="hint">填售价后可看运费占比</span>
     </div>
+
     <div class="fg" style="justify-content:flex-end">
-      <div class="check-row"><input type="checkbox" id="hasBattery" onchange="calc()"><label>带电产品</label></div>
-      <div class="check-row"><input type="checkbox" id="isTextile" onchange="calc()"><label>纺织品/鞋子</label></div>
-      <div class="check-row"><input type="checkbox" id="isFBA" onchange="calc()" checked><label>FBA地址</label></div>
+      <div class="check-row">
+        <input type="checkbox" id="hasBattery" onchange="calc()"><label>带电产品</label>
+        <span class="chk-help">（头程+¥1/KG）</span>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="isTextile" onchange="calc()"><label>纺织品/鞋子</label>
+        <span class="chk-help">（头程+¥2/KG）</span>
+      </div>
+      <div class="check-row">
+        <input type="checkbox" id="isFBA" onchange="calc()" checked><label>FBA地址</label>
+        <span class="chk-help">（不勾=海外仓+¥100/票）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结果速览 -->
+  <div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:8px">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--pri)"></div>头程：中国→海外仓</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ac2)"></div>海外仓：入库+出库</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--acc)"></div>尾程：仓库→客户</div>
+      <div class="legend-item"><span style="font-weight:700;color:var(--grn)">总成本=三者相加</span></div>
     </div>
   </div>
 </div>
@@ -117,7 +146,7 @@ tr:nth-child(even) td{background:var(--bg)}
 <div class="card">
   <div class="card-tt"><span class="ico" style="background:#D1FAE5">💰</span>单件履约成本速算</div>
   <div class="res-big">
-    <div class="lbl" id="resultLabel">最优方案总成本（含头程+海外仓+尾程）</div>
+    <div class="lbl" id="resultLabel">最优方案总成本</div>
     <div class="num" id="totalCost">--</div>
     <div class="sub" id="totalSub"></div>
   </div>
@@ -126,17 +155,17 @@ tr:nth-child(even) td{background:var(--bg)}
     <div class="bi"><div class="val" id="costWarehouse" style="color:var(--ac2)">--</div><div class="lbl">海外仓操作/件</div></div>
     <div class="bi"><div class="val" id="costLastMile" style="color:var(--acc)">--</div><div class="lbl">尾程配送/件</div></div>
   </div>
-  <div id="priceRatio" style="display:none;text-align:center;margin-top:8px;font-size:12px;color:var(--mut)"></div>
+  <div id="priceRatio" style="display:none;text-align:center;margin-top:10px;padding:6px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--txt)"></div>
 </div>
 
 <!-- CHANNEL COMPARISON -->
 <div class="card">
-  <div class="card-tt"><span class="ico" style="background:#DBEAFE">🚚</span>渠道对比（单件总成本）</div>
+  <div class="card-tt"><span class="ico" style="background:#DBEAFE">🚚</span>渠道对比 <span style="font-size:10px;font-weight:400;color:var(--mut)">（每件总成本，含头程+仓+尾程）</span></div>
   <div id="comparisonTable"></div>
 </div>
 
 <!-- NOTES -->
-<div class="card" id="notesCard">
+<div class="card">
   <div class="card-tt"><span class="ico" style="background:#FEE2E2">⚠️</span>注意事项</div>
   <div class="note" id="notesContent"></div>
 </div>
@@ -165,34 +194,33 @@ const UK = {
     {name:'DHL 次日达',     price:7.50, days:'1天', best:false, note:'最快'},
   ],
   notes: [
-    '⚠️ 单箱最低计费12KG(空派/海运)或13KG(卡航)，不满按最低收',
-    '⚠️ 单票最低21KG起收',
-    '⚠️ 体积重÷6000与实重取大值计费',
-    '⚠️ 非FBA地址空派<50KG加收¥100/票',
-    '⚠️ 纺织品+¥2/KG，带电+¥1/KG',
-    '✅ 海外仓30天免仓租',
-    '✅ 头程丢件最高赔¥40/KG，高货值请买保险',
+    '单箱最低计费：空派12KG、卡航13KG、海运12KG，不满按最低收',
+    '单票最低21KG起收，不足也按21KG收费',
+    '体积重=长×宽×高÷6000，与实重取大值计费',
+    '非FBA地址（海外仓）空派<50KG加收¥100/票',
+    '纺织品/鞋子头程+¥2/KG，带电+¥1/KG',
+    '海外仓30天免仓租，入库+出库费按实际重量阶梯计价',
+    '头程丢件最高赔¥40/KG，尾程丢件按物流商标准，高货值请买保险',
   ]
 };
 
 const US = {
   freight: {
-    upsFast: { name:'SZUPS特快促销', rates:{kg23:67.5, kg45:67.5, kg75:67.5}, opFee:150, ipf:18.4, minBox:6, minShip:23, divisor:5000, days:'2-4天签收', surcharge:{battery:1, textile:1, nonFBA:0}, note:'单件最低6KG计费' },
-    upsStd:  { name:'UPS红单包税',   rates:{kg25:71, kg100:67}, opFee:150, ipf:18.4, minBox:6, minShip:25, divisor:5000, days:'5-7天签收', surcharge:{battery:0, textile:2, nonFBA:0}, note:'' },
-    air:     { name:'美国空派普货',   rates:{kg12:66.5, kg21:63.5, kg101:61.5}, minBox:12, minShip:12, divisor:6000, days:'6-8天提取', surcharge:{battery:0, textile:2, nonFBAUnder50:0}, note:'美西价格，美中+3,美东+4' },
-    seaFast: { name:'美森正班海派',   rates:{kg12:17.5, kg100:14}, minBox:12, minShip:12, divisor:6000, days:'12-15天提取', surcharge:{battery:0, textile:2}, note:'美西价格，美中+1.5,美东+2.5' },
-    seaEco:  { name:'以星快提海派',   rates:{kg12:15.5, kg100:12.5}, minBox:12, minShip:12, divisor:6000, days:'15-18天提取', surcharge:{battery:0, textile:2}, note:'美西价格' },
+    upsFast: { name:'SZUPS特快促销', rates:{kg23:67.5, kg45:67.5, kg75:67.5}, opFee:150, ipf:18.4, minBox:6, minShip:23, divisor:5000, days:'2-4天签收', surcharge:{battery:1, textile:1}, note:'单件最低6KG' },
+    upsStd:  { name:'UPS红单包税',   rates:{kg25:71, kg100:67}, opFee:150, ipf:18.4, minBox:6, minShip:25, divisor:5000, days:'5-7天签收', surcharge:{battery:0, textile:2}, note:'' },
+    air:     { name:'美国空派普货',   rates:{kg12:66.5, kg21:63.5, kg101:61.5}, minBox:12, minShip:12, divisor:6000, days:'6-8天提取', surcharge:{battery:0, textile:2}, note:'美西，美中+3，美东+4' },
+    seaFast: { name:'美森正班海派',   rates:{kg12:17.5, kg100:14}, minBox:12, minShip:12, divisor:6000, days:'12-15天提取', surcharge:{battery:0, textile:2}, note:'美西，美中+1.5，美东+2.5' },
+    seaEco:  { name:'以星快提海派',   rates:{kg12:15.5, kg100:12.5}, minBox:12, minShip:12, divisor:6000, days:'15-18天提取', surcharge:{battery:0, textile:2}, note:'美西' },
   },
-  warehouse: null, // 暂无美国海外仓数据，用占位
-  lastMile: null,  // 暂无美国尾程数据
+  warehouse: null,
+  lastMile: null,
   notes: [
-    '⚠️ 美国海外仓+尾程数据尚未上传，当前仅计算头程',
-    '⚠️ SZUPS特快：单件最低6KG，不足按6KG计',
-    '⚠️ 美森正班：超时赔¥1/KG/工作日，上限3天',
-    '⚠️ UPS附加费：IPF ¥18.4/票，操作费¥150/票',
-    '⚠️ 体积重÷5000(UPS)或÷6000(空派/海运)',
-    '⚠️ 纺织品+¥1-2/KG，带电+¥1/KG',
-    '⚠️ 头程丢件最高赔¥40/KG，高货值请买保险',
+    '美国海外仓+尾程数据尚未上传，当前仅计算头程费用',
+    'SZUPS特快：单件最低6KG计费，UPS体积重÷5000',
+    '空派/海运体积重÷6000，美森超时赔¥1/KG/工作日（上限3天）',
+    'UPS附加费：操作费¥150/票 + IPF ¥18.4/票',
+    '纺织品+¥1-2/KG，带电+¥1/KG',
+    '头程丢件最高赔¥40/KG，高货值请自行购买保险',
   ]
 };
 
@@ -207,10 +235,9 @@ function switchCountry(c) {
 
 function getRate(channel, totalKg) {
   const rates = channel.rates;
-  const keys = Object.keys(rates).map(k => parseInt(k.replace(/\\D/g,''))).sort((a,b)=>a-b);
   let rate = rates[Object.keys(rates)[0]];
   for (const rawKey of Object.keys(rates)) {
-    const k = parseInt(rawKey.replace(/\\D/g,''));
+    const k = parseInt(rawKey.replace(/\D/g,''));
     if (totalKg >= k) rate = rates[rawKey];
   }
   return rate;
@@ -240,37 +267,30 @@ function calc() {
 
   const cfg = country === 'UK' ? UK : US;
 
-  // Volume weight per piece
-  const volW = (l * wi * h) / cfg.freight[Object.keys(cfg.freight)[0]].divisor;
+  const firstCh = cfg.freight[Object.keys(cfg.freight)[0]];
+  const divisor = firstCh.divisor;
+  const volW = (l * wi * h) / divisor;
   const actW = w / 1000;
   const billW = Math.max(volW, actW);
-  document.getElementById('volWeightHint').textContent =
-    `体积重: ${volW.toFixed(3)}KG | 实重: ${actW.toFixed(3)}KG | 计费重: ${billW.toFixed(3)}KG`;
 
-  // Per box
-  const boxActW = actW * perBox;
+  document.getElementById('volWeightHint').textContent =
+    '体积重: ' + volW.toFixed(3) + 'KG | 实重: ' + actW.toFixed(3) + 'KG | 计费取大: ' + billW.toFixed(3) + 'KG';
+
   const boxBillW = billW * perBox;
   document.getElementById('boxWeightHint').textContent =
-    `单箱计费重: ${boxBillW.toFixed(1)}KG`;
+    '单箱计费重: ' + boxBillW.toFixed(1) + 'KG（不满最低按最低收）';
 
-  // Total
-  const totalActW = actW * totalQty;
   const totalBillW = billW * totalQty;
   const boxes = Math.ceil(totalQty / perBox);
   document.getElementById('totalWeightHint').textContent =
-    `总实重: ${totalActW.toFixed(1)}KG | 总计费重: ${totalBillW.toFixed(1)}KG | 约${boxes}箱`;
+    '总计费重: ' + totalBillW.toFixed(1) + 'KG | 约' + boxes + '箱（不满21KG按21KG收）';
 
-  // Calculate each channel
   const results = [];
   for (const [key, ch] of Object.entries(cfg.freight)) {
-    // Headline billing: per-box weight with minimum enforced, then per-shipment minimum
     let billPerBox = Math.max(boxBillW, ch.minBox || 0);
     let billPerPiece = billPerBox / perBox;
     let totalBill = billPerPiece * totalQty;
     if (ch.minShip && totalBill < ch.minShip) totalBill = ch.minShip;
-
-    // Warehouse fees use ACTUAL per-piece weight, not the headway minimum-bloated weight
-    let whPieceW = billW;
 
     const baseRate = getRate(ch, totalBill);
     let surcharge = 0;
@@ -280,21 +300,18 @@ function calc() {
     const freightCost = totalBill * (baseRate + surcharge);
     const freightPerPiece = freightCost / totalQty;
 
-    // Extra fees
     let extraFees = 0;
     if (ch.opFee) extraFees += ch.opFee;
     if (ch.ipf) extraFees += ch.ipf;
     if (!isFBA && ch.surcharge.nonFBAUnder50 && totalBill < 50) extraFees += ch.surcharge.nonFBAUnder50;
     const extraPerPiece = extraFees / totalQty;
 
-    // Warehouse (uses actual piece weight, not headway-minimum-bloated weight)
     let whPerPiece = 0;
     if (cfg.warehouse) {
-      whPerPiece = calcWarehouseFee(whPieceW, cfg.warehouse.inbound)
-                 + calcWarehouseFee(whPieceW, cfg.warehouse.outbound);
+      whPerPiece = calcWarehouseFee(billW, cfg.warehouse.inbound)
+                 + calcWarehouseFee(billW, cfg.warehouse.outbound);
     }
 
-    // Last mile
     let lmCost = 0;
     let lmName = '';
     if (cfg.lastMile && cfg.lastMile.length > 0) {
@@ -311,68 +328,60 @@ function calc() {
     });
   }
 
-  // Sort by total
   results.sort((a,b) => a.totalPerPiece - b.totalPerPiece);
 
-  // Display best
   const best = results[0];
   const bestTotal = best.totalPerPiece;
   const isUK = country === 'UK';
-  const curSymbol = isUK ? '¥' : '¥';
 
   document.getElementById('totalCost').textContent =
-    isUK ? `¥${bestTotal.toFixed(2)} / £${(bestTotal/9.2).toFixed(2)}` : `¥${bestTotal.toFixed(2)}`;
+    isUK ? '¥' + bestTotal.toFixed(2) + ' / £' + (bestTotal/9.2).toFixed(2)
+         : '¥' + bestTotal.toFixed(2);
   document.getElementById('resultLabel').textContent =
-    `最优方案：${best.name} + ${best.lmName || ''}`;
+    '最优方案：' + best.name + (best.lmName ? ' + ' + best.lmName : '');
   document.getElementById('totalSub').textContent =
-    `头程${best.days} | ${isUK?'30天免仓租':''}`;
+    '头程时效 ' + best.days + (isUK ? ' | 海外仓30天免仓租' : '');
 
-  document.getElementById('costFreight').textContent = `¥${(best.freightPerPiece + best.extraPerPiece).toFixed(2)}`;
-  document.getElementById('costWarehouse').textContent = isUK ? `£${best.whPerPiece.toFixed(2)}` : '待录入';
-  document.getElementById('costLastMile').textContent = isUK ? `£${best.lmCost.toFixed(2)}` : '待录入';
+  document.getElementById('costFreight').textContent = '¥' + (best.freightPerPiece + best.extraPerPiece).toFixed(2);
+  document.getElementById('costWarehouse').textContent = isUK ? '£' + best.whPerPiece.toFixed(2) : '待录入';
+  document.getElementById('costLastMile').textContent = isUK ? '£' + best.lmCost.toFixed(2) : '待录入';
 
-  // Price ratio
   const ratioDiv = document.getElementById('priceRatio');
   if (ratioDiv) {
     if (price > 0) {
       const ratio = (bestTotal / price * 100).toFixed(1);
       ratioDiv.style.display = 'block';
-      ratioDiv.innerHTML = `运费占比售价 <b>${ratio}%</b>（售价 ¥${price}）`;
+      ratioDiv.innerHTML = '📊 运费占售价 <b>' + ratio + '%</b>（售价 ¥' + price + '）' + (ratio > 30 ? ' ⚠️ 占比偏高，注意利润空间' : ' ✅ 运费占比健康');
     } else {
       ratioDiv.style.display = 'none';
     }
   }
 
-  // Comparison table
-  let tableHTML = `<table><thead><tr>
-    <th>渠道</th><th>头程/件</th>${isUK?'<th>海外仓/件</th><th>尾程/件</th>':''}<th>总成本/件</th><th>时效</th><th></th>
-  </tr></thead><tbody>`;
+  let tableHTML = '<table><thead><tr><th>渠道</th><th>头程/件</th>' +
+    (isUK ? '<th>海外仓/件</th><th>尾程/件</th>' : '') +
+    '<th>总成本/件</th><th>时效</th><th></th></tr></thead><tbody>';
 
   results.forEach((r,i) => {
     const isBest = i === 0;
     const rowClass = isBest ? 'best' : '';
     const badgeHTML = isBest ? '<span class="badge badge-best">👈 推荐</span>' : '';
     const totalDisplay = isUK
-      ? `¥${r.totalPerPiece.toFixed(2)} / £${(r.totalPerPiece/9.2).toFixed(2)}`
-      : `¥${r.totalPerPiece.toFixed(2)}`;
+      ? '¥' + r.totalPerPiece.toFixed(2) + ' / £' + (r.totalPerPiece/9.2).toFixed(2)
+      : '¥' + r.totalPerPiece.toFixed(2);
 
-    tableHTML += `<tr class="${rowClass}">
-      <td>${r.name}</td>
-      <td>¥${(r.freightPerPiece + r.extraPerPiece).toFixed(2)}</td>
-      ${isUK?`<td>£${r.whPerPiece.toFixed(2)}</td><td>£${r.lmCost.toFixed(2)}</td>`:''}
-      <td><b>${totalDisplay}</b></td>
-      <td>${r.days}</td>
-      <td>${badgeHTML}${r.note?`<span style="font-size:9px;color:var(--mut)">${r.note}</span>`:''}</td>
-    </tr>`;
+    tableHTML += '<tr class="' + rowClass + '"><td>' + r.name + '</td>' +
+      '<td>¥' + (r.freightPerPiece + r.extraPerPiece).toFixed(2) + '</td>' +
+      (isUK ? '<td>£' + r.whPerPiece.toFixed(2) + '</td><td>£' + r.lmCost.toFixed(2) + '</td>' : '') +
+      '<td><b>' + totalDisplay + '</b></td>' +
+      '<td>' + r.days + '</td>' +
+      '<td>' + badgeHTML + (r.note ? '<span style="font-size:9px;color:var(--mut)">' + r.note + '</span>' : '') + '</td></tr>';
   });
   tableHTML += '</tbody></table>';
   document.getElementById('comparisonTable').innerHTML = tableHTML;
 
-  // Notes
-  document.getElementById('notesContent').innerHTML = cfg.notes.map(n => `• ${n}`).join('<br>');
+  document.getElementById('notesContent').innerHTML = cfg.notes.map(function(n) { return '• ' + n; }).join('<br>');
 }
 
-// Init - wrapped in try-catch and DOM ready
 function safeCalc() {
   try { calc(); } catch(e) { console.error('Calc error:', e); }
 }
