@@ -207,9 +207,12 @@ function switchCountry(c) {
 
 function getRate(channel, totalKg) {
   const rates = channel.rates;
-  const keys = Object.keys(rates).map(Number).sort((a,b)=>a-b);
-  let rate = rates[keys[0]];
-  for (const k of keys) { if (totalKg >= k) rate = rates[k]; }
+  const keys = Object.keys(rates).map(k => parseInt(k.replace(/\\D/g,''))).sort((a,b)=>a-b);
+  let rate = rates[Object.keys(rates)[0]];
+  for (const rawKey of Object.keys(rates)) {
+    const k = parseInt(rawKey.replace(/\\D/g,''));
+    if (totalKg >= k) rate = rates[rawKey];
+  }
   return rate;
 }
 
