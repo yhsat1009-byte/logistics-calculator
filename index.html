@@ -260,13 +260,14 @@ function calc() {
   // Calculate each channel
   const results = [];
   for (const [key, ch] of Object.entries(cfg.freight)) {
-    // Apply min box weight
+    // Headline billing: per-box weight with minimum enforced, then per-shipment minimum
     let billPerBox = Math.max(boxBillW, ch.minBox || 0);
     let billPerPiece = billPerBox / perBox;
     let totalBill = billPerPiece * totalQty;
-
-    // Apply min shipment
     if (ch.minShip && totalBill < ch.minShip) totalBill = ch.minShip;
+
+    // Warehouse fees use ACTUAL per-piece weight, not the headway minimum-bloated weight
+    let whPieceW = billW;
 
     const baseRate = getRate(ch, totalBill);
     let surcharge = 0;
@@ -283,11 +284,11 @@ function calc() {
     if (!isFBA && ch.surcharge.nonFBAUnder50 && totalBill < 50) extraFees += ch.surcharge.nonFBAUnder50;
     const extraPerPiece = extraFees / totalQty;
 
-    // Warehouse
+    // Warehouse (uses actual piece weight, not headway-minimum-bloated weight)
     let whPerPiece = 0;
     if (cfg.warehouse) {
-      whPerPiece = calcWarehouseFee(billPerPiece, cfg.warehouse.inbound)
-                 + calcWarehouseFee(billPerPiece, cfg.warehouse.outbound);
+      whPerPiece = calcWarehouseFee(whPieceW, cfg.warehouse.inbound)
+                 + calcWarehouseFee(whPieceW, cfg.warehouse.outbound);
     }
 
     // Last mile
